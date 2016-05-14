@@ -14,10 +14,10 @@ module Mercadopago
   extend self
 
   def configure
-    yield self
+    yield Config
   end
 
-  def client
-    Client.new
+  def client(opts = {})
+    Client.new(opts)
   end
 end

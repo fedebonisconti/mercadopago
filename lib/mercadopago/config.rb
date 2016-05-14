@@ -10,16 +10,10 @@ module Mercadopago
       raise(Errors::CredentialNotFound.new('Access Token not found'))
     end
 
-    def client_id
-      (secrets && secrets['client_id']) ||
-      ENV['MERCADOPAGO_CLIENT_ID'] ||
-      raise(Errors::CredentialNotFound.new('Client ID not found'))
-    end
-
-    def client_secret
-      # (secrets && secrets['client_secret']) ||
-      # ENV['MERCADOPAGO_CLIENT_SECRET'] ||
-      # raise(Errors::CredentialNotFound.new('Client Secret not found'))
+    def public_key
+      (secrets && secrets['public_key']) ||
+      ENV['MERCADOPAGO_PUBLIC_KEY'] ||
+      raise(Errors::CredentialNotFound.new('Public Key not found'))
     end
 
     def sandbox_mode

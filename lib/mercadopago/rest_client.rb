@@ -16,8 +16,7 @@ module Mercadopago
     def initialize(opts = {})
       config = ::Mercadopago::Config
       @access_token = opts[:access_token] || config.access_token
-      @client_id = opts[:client_id] || config.client_id
-      @client_secret = opts[:client_secret] || config.client_secret
+      @public_key = opts[:public_key] || config.public_key
       @sandbox_mode = opts[:sandbox_mode] || config.sandbox_mode || true
 
       @http = Net::HTTP.new(api_base_uri.host, api_base_uri.port)

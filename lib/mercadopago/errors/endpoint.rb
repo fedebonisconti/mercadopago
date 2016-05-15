@@ -1,6 +1,6 @@
 module Mercadopago
   module Errors
-    class Operation < StandardError
+    class Endpoint < StandardError
     end
   end
 end

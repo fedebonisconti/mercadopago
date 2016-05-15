@@ -1,5 +1,5 @@
 module Mercadopago
-  module Operation
+  module Endpoint
     class Payment < Base
       ENDPOINT = "/v1/payments"
 

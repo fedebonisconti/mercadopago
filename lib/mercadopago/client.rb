@@ -1,6 +1,6 @@
 require "mercadopago/rest_client"
-require "mercadopago/operation/base"
-require "mercadopago/operation/payment"
+require "mercadopago/endpoint/base"
+require "mercadopago/endpoint/payment"
 
 module Mercadopago
   class Client
@@ -17,18 +17,19 @@ module Mercadopago
     end
 
     def payment(method, data)
-      call_operation(Operation::Payment.new(rest_client, data), method)
+      call_operation(Endpoint::Payment, data, method)
     end
 
     def subscribe(method, data)
-      call_operation(Operation::Subscription.new(rest_client, data), method)
+      call_operation(Endpoint::Subscription, data, method)
     end
 
 
     private
-    def call_operation(op, method)
+    def call_operation(klazz, data, method)
+      op = klazz.new(rest_client, data)
       op.public_send(method) if op.respond_to?(method) ||
-        raise(Errors::Operation.new('Invalid operation'))
+        raise(Errors::Endpoint.new('Invalid endpoint'))
     end
   end
 end

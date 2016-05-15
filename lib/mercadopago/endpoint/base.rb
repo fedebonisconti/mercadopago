@@ -1,7 +1,7 @@
 require 'mercadopago/utils/hash'
 
 module Mercadopago
-  module Operation
+  module Endpoint
     class Base
       attr_reader :data, :rest_client
 

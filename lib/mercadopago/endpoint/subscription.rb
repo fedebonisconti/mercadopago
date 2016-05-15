@@ -1,5 +1,5 @@
 module Mercadopago
-  module Operation
+  module Endpoint
     class Subscription < Base
     end
   end

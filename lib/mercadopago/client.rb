@@ -1,6 +1,5 @@
 require "mercadopago/rest_client"
-require "mercadopago/endpoint/base"
-require "mercadopago/endpoint/payment"
+require "mercadopago/endpoint"
 
 module Mercadopago
   class Client
@@ -9,7 +8,7 @@ module Mercadopago
     extend Forwardable
 
     def_delegators :@rest_client, :sandbox_mode,
-      :access_token, :client_id, :client_secret
+      :access_token, :public_key
 
 
     def initialize(opts = {})
@@ -17,16 +16,20 @@ module Mercadopago
     end
 
     def payment(method, data)
-      call_operation(Endpoint::Payment, data, method)
+      call_endpoint(Endpoint::Payment, method, data)
     end
 
     def subscribe(method, data)
-      call_operation(Endpoint::Subscription, data, method)
+      call_endpoint(Endpoint::Subscription, method, data)
+    end
+
+    def payment_methods(method, data = {})
+      call_endpoint(Endpoint::PaymentMethods, method, data)
     end
 
 
     private
-    def call_operation(klazz, data, method)
+    def call_endpoint(klazz, method, data)
       op = klazz.new(rest_client, data)
       op.public_send(method) if op.respond_to?(method) ||
         raise(Errors::Endpoint.new('Invalid endpoint'))

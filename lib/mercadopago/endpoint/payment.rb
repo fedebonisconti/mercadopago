@@ -1,10 +1,13 @@
 module Mercadopago
   module Endpoint
     class Payment < Base
-      ENDPOINT = "/v1/payments"
+      ENDPOINT = "/payments"
+      COLLECTIONS = "/collections/"
 
-      def get(id)
-
+      def get
+        endpoint = ENDPOINT
+        endpoint += COLLECTIONS + "notifications/" + data[:id] if data[:id]
+        rest_client.get(endpoint)
       end
 
       def charge
@@ -12,7 +15,11 @@ module Mercadopago
       end
 
       def refund
+        rest_client.put(COLLECTIONS + data[:id])
+      end
 
+      def cancel
+        rest_client.put(COLLECTIONS + params[:id])
       end
 
       def mandatory_keys

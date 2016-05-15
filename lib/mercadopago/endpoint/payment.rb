@@ -2,11 +2,9 @@ module Mercadopago
   module Endpoint
     class Payment < Base
       ENDPOINT = "/payments"
-      COLLECTIONS = "/collections/"
 
       def get
-        endpoint = ENDPOINT
-        endpoint += COLLECTIONS + "notifications/" + data[:id] if data[:id]
+        endpoint = data[:id] ? member_endpoint : ENDPOINT
         rest_client.get(endpoint)
       end
 
@@ -15,16 +13,26 @@ module Mercadopago
       end
 
       def refund
-        rest_client.put(COLLECTIONS + data[:id])
+        rest_client.put(member_endpoint + "/refunds")
       end
 
       def cancel
-        rest_client.put(COLLECTIONS + params[:id])
+        rest_client.put(member_endpoint, {status: "cancelled"})
+      end
+
+      def search
+        rest_client.get(ENDPOINT)
       end
 
       def mandatory_keys
         [:transaction_amount, :token, :description, :installments,
           :payment_method_id, payer: [:email] ]
+      end
+
+      private
+
+      def member_endpoint
+        ENDPOINT + "/#{data[:id]}"
       end
 
     end

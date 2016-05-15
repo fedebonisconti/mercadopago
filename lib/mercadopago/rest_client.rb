@@ -12,6 +12,7 @@ module Mercadopago
     MIME_FORM = 'application/x-www-form-urlencoded'
     API_BASE_URL = 'https://api.mercadopago.com'
     MERCADO_PAGO_VERSION = '0.3.4'
+    API_VERSION = 'v1'
 
 
     def initialize(opts = {})
@@ -29,7 +30,7 @@ module Mercadopago
       params['access_token'] = access_token
       @query ||= (uri.include?("?") ? "&" : "?") +
         URI.escape(params.map { |k, v| "#{k}=#{v}" }.join('&'))
-      sandbox_prefix + "/v1" + uri + @query
+      sandbox_prefix + API_VERSION + uri + @query
     end
 
     def get(uri, params = {}, content_type = MIME_JSON)
@@ -84,7 +85,7 @@ module Mercadopago
     end
 
     def sandbox_prefix
-      @sandbox_mode ? "/sandbox" : ""
+      "/#{@sandbox ? 'sandbox/' : ''}"
     end
 
   end

@@ -14,7 +14,14 @@ module Mercadopago
 
 
       def to_s
+        # TODO: review this implementation
         self.class.to_s.split("::").last.downcase
+      end
+
+      protected
+      def member_endpoint
+        id = data[:id] || raise(StandardError.new('Unknown ID'))
+        "#{ENDPOINT}/#{id}"
       end
 
       private

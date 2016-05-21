@@ -21,18 +21,12 @@ module Mercadopago
       end
 
       def search
-        rest_client.get(ENDPOINT)
+        rest_client.get(ENDPOINT + "/search", data[:filters])
       end
 
       def mandatory_keys
         [:transaction_amount, :token, :description, :installments,
           :payment_method_id, payer: [:email] ]
-      end
-
-      private
-
-      def member_endpoint
-        ENDPOINT + "/#{data[:id]}"
       end
 
     end

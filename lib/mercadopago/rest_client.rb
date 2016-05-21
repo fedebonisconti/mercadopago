@@ -8,11 +8,11 @@ module Mercadopago
     attr_reader :sandbox_mode, :access_token, :client_id,
       :client_secret, :query
 
-    MIME_JSON = 'application/json'
-    MIME_FORM = 'application/x-www-form-urlencoded'
-    API_BASE_URL = 'https://api.mercadopago.com'
-    MERCADO_PAGO_VERSION = '0.3.4'
-    API_VERSION = 'v1'
+    MIME_JSON = 'application/json'.freeze
+    MIME_FORM = 'application/x-www-form-urlencoded'.freeze
+    API_BASE_URL = 'https://api.mercadopago.com'.freeze
+    MERCADO_PAGO_VERSION = '0.3.4'.freeze
+    API_VERSION = 'v1'.freeze
 
 
     def initialize(opts = {})
@@ -22,11 +22,11 @@ module Mercadopago
       @sandbox_mode = opts[:sandbox_mode] || config.sandbox_mode || true
 
       @http = Net::HTTP.new(api_base_uri.host, api_base_uri.port)
-      # @http.set_debug_output $stdout
+      @http.set_debug_output $stdout
       set_https if api_base_uri.scheme == "https"
     end
 
-    def build_url(uri, params)
+    def generate_uri(uri, params)
       params['access_token'] = access_token
       @query ||= (uri.include?("?") ? "&" : "?") +
         URI.escape(params.map { |k, v| "#{k}=#{v}" }.join('&'))
@@ -34,19 +34,19 @@ module Mercadopago
     end
 
     def get(uri, params = {}, content_type = MIME_JSON)
-      request("GET", build_url(uri, params), content_type)
+      request("GET", generate_uri(uri, params), content_type)
     end
 
     def post(uri, data, params = {}, content_type = MIME_JSON)
-      request("POST", build_url(uri, params), content_type, data)
+      request("POST", generate_uri(uri, params), content_type, data)
     end
 
     def put(uri, data = nil, params = {}, content_type = MIME_JSON)
-      request("PUT", build_url(uri, params), content_type, data)
+      request("PUT", generate_uri(uri, params), content_type, data)
     end
 
     def delete(uri, params = {}, content_type = MIME_JSON)
-      request("DELETE", build_url(uri, params), content_type)
+      request("DELETE", generate_uri(uri, params), content_type)
     end
 
     def api_base_uri
@@ -54,14 +54,9 @@ module Mercadopago
     end
 
     def request(method, uri, content_type, data = nil)
-      puts "===== URI ====="
-      puts "#{uri}"
-      puts "==============="
-      puts "===== DATA ====="
-      puts data.to_json
-      puts "================"
       api_result = @http.send_request(method, uri, data.to_json, headers(content_type))
-      puts api_result.body
+      puts uri
+      # puts api_result.body
       {
         status: api_result.code,
         response: JSON.parse(api_result.body)
@@ -85,7 +80,7 @@ module Mercadopago
     end
 
     def sandbox_prefix
-      "/#{@sandbox ? 'sandbox/' : ''}"
+      "/#{sandbox_mode ? 'sandbox/' : ''}"
     end
 
   end

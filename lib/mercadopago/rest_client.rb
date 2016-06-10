@@ -12,7 +12,7 @@ module Mercadopago
     MIME_FORM = 'application/x-www-form-urlencoded'.freeze
     API_BASE_URL = 'https://api.mercadopago.com'.freeze
     MERCADO_PAGO_VERSION = '0.3.4'.freeze
-    API_VERSION = 'v1'.freeze
+    API_VERSION = '/v1'.freeze
 
 
     def initialize(opts = {})
@@ -53,7 +53,8 @@ module Mercadopago
       @api_base_uri ||= URI.parse(API_BASE_URL)
     end
 
-    def request(method, uri, content_type, data = nil)
+    def request(method, uri, content_type, data = {})
+      #data.merge!({sandbox_mode: sandbox_mode})
       api_result = @http.send_request(method, uri, data.to_json, headers(content_type))
       puts uri
       # puts api_result.body
@@ -80,7 +81,7 @@ module Mercadopago
     end
 
     def sandbox_prefix
-      "/#{sandbox_mode ? 'sandbox/' : ''}"
+      "/#{sandbox_mode ? 'sandbox' : ''}"
     end
 
   end

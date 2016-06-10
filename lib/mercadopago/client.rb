@@ -16,12 +16,12 @@ module Mercadopago
     end
 
     # This method provides interaction with payment's API endpoint
-    def payment(method, data)
+    def payment(method, data = {})
       call_endpoint(Endpoint::Payment, method, data)
     end
 
     # This method provides interaction with subcription's API endpoint
-    def subscribe(method, data)
+    def subscribe(method, data = {})
       call_endpoint(Endpoint::Subscription, method, data)
     end
 

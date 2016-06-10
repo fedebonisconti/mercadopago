@@ -7,14 +7,12 @@ module Mercadopago
 
       def initialize(rest_client, data)
         @rest_client = rest_client
+        # validate_data(@data, mandatory_keys)
         @data = data
-        # @data = Utils::Hash.new(data)
-        # verify_data(@data, mandatory_keys)
       end
 
 
       def to_s
-        # TODO: review this implementation
         self.class.to_s.split("::").last.downcase
       end
 
@@ -25,9 +23,20 @@ module Mercadopago
       end
 
       private
-      def verify_data(h, *keys)
-        raise(Error::BadRequest.new('Missing data')) unless keys.all? do |k, v|
-          verify_data(h[k], v) if v.kind_of?(Hash)
+      def validate_data(h, keys)
+        unless keys.all?{|k| check_mandatory_keys(h, k) }
+          raise(Error::BadRequest.new('Missing data.
+            Mandatory keys: #{mandatory_keys}'))
+        end
+      end
+
+      def check_mandatory_keys(h, k)
+        if k.is_a?(Symbol) || k.is_a?(String)
+          h[k]
+        elsif k.is_a?(Array)
+          k.all?{ |key| h[key]}
+        elsif k.is_a?(Hash)
+          k.all?{|key, value| check_mandatory_keys(h[key], value) }
         end
       end
 

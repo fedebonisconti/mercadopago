@@ -1,11 +1,12 @@
 require 'uri'
 require 'net/https'
 require 'json'
+require 'mercadopago/config'
 
 module Mercadopago
   class RestClient
     attr_accessor :http, :api_base_uri
-    attr_reader :sandbox_mode, :access_token, :client_id,
+    attr_reader :sandbox_mode, :access_token, :public_key,
       :client_secret, :query
 
     MIME_JSON = 'application/json'.freeze
@@ -16,21 +17,20 @@ module Mercadopago
 
 
     def initialize(opts = {})
-      config = ::Mercadopago::Config
-      @access_token = opts[:access_token] || config.access_token
-      @public_key = opts[:public_key] || config.public_key
-      @sandbox_mode = opts[:sandbox_mode] || config.sandbox_mode || true
+      @access_token = opts[:access_token] || Config.access_token
+      @public_key = opts[:public_key] || Config.public_key
+      @sandbox_mode = opts[:sandbox_mode] || Config.sandbox_mode || true
 
       @http = Net::HTTP.new(api_base_uri.host, api_base_uri.port)
       @http.set_debug_output $stdout
       set_https if api_base_uri.scheme == "https"
     end
 
-    def generate_uri(uri, params)
+    def generate_uri(uri, params = {})
       params['access_token'] = access_token
       @query ||= (uri.include?("?") ? "&" : "?") +
-        URI.escape(params.map { |k, v| "#{k}=#{v}" }.join('&'))
-      sandbox_prefix + API_VERSION + uri + @query
+        URI.encode_www_form(params)
+      API_VERSION + uri + @query
     end
 
     def get(uri, params = {}, content_type = MIME_JSON)
@@ -79,10 +79,5 @@ module Mercadopago
       # TODO: review this option
     	# @http.ssl_version = OpenSSL::SSL::OP_NO_SSLv3
     end
-
-    def sandbox_prefix
-      "/#{sandbox_mode ? 'sandbox' : ''}"
-    end
-
   end
 end

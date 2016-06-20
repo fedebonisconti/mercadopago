@@ -14,16 +14,16 @@ module Mercadopago
     API_BASE_URL = 'https://api.mercadopago.com'.freeze
     MERCADO_PAGO_VERSION = '0.3.4'.freeze
     API_VERSION = '/v1'.freeze
-
+    GET = "GET".freeze
+    POST = "POST".freeze
+    PUT = "PUT".freeze
+    DELETE = "DELETE".freeze
 
     def initialize(opts = {})
       @access_token = opts[:access_token] || Config.access_token
       @public_key = opts[:public_key] || Config.public_key
       @sandbox_mode = opts[:sandbox_mode] || Config.sandbox_mode || true
-
-      @http = Net::HTTP.new(api_base_uri.host, api_base_uri.port)
-      @http.set_debug_output $stdout
-      set_https if api_base_uri.scheme == "https"
+      @http = set_http
     end
 
     def generate_uri(uri, params = {})
@@ -34,30 +34,27 @@ module Mercadopago
     end
 
     def get(uri, params = {}, content_type = MIME_JSON)
-      request("GET", generate_uri(uri, params), content_type)
+      request(GET, uri, params, content_type)
     end
 
     def post(uri, data, params = {}, content_type = MIME_JSON)
-      request("POST", generate_uri(uri, params), content_type, data)
+      request(POST, uri, params, content_type, data)
     end
 
     def put(uri, data = nil, params = {}, content_type = MIME_JSON)
-      request("PUT", generate_uri(uri, params), content_type, data)
+      request(PUT, uri, params, content_type, data)
     end
 
     def delete(uri, params = {}, content_type = MIME_JSON)
-      request("DELETE", generate_uri(uri, params), content_type)
+      request(DELETE, uri, params, content_type)
     end
 
     def api_base_uri
       @api_base_uri ||= URI.parse(API_BASE_URL)
     end
 
-    def request(method, uri, content_type, data = {})
-      #data.merge!({sandbox_mode: sandbox_mode})
-      api_result = @http.send_request(method, uri, data.to_json, headers(content_type))
-      puts uri
-      # puts api_result.body
+    def request(method, uri, params, content_type, data = {})
+      api_result = http.send_request(method, generate_uri(uri, params), data.to_json, headers(content_type))
       {
         status: api_result.code,
         response: JSON.parse(api_result.body)
@@ -73,11 +70,16 @@ module Mercadopago
       }
     end
 
-    def set_https
-    	@http.use_ssl = true
-    	@http.verify_mode = OpenSSL::SSL::VERIFY_PEER
-      # TODO: review this option
-    	# @http.ssl_version = OpenSSL::SSL::OP_NO_SSLv3
+    def set_http
+      http = Net::HTTP.new(api_base_uri.host, api_base_uri.port)
+      http.set_debug_output $stdout
+      if api_base_uri.scheme == "https"
+        http.use_ssl = true
+        http.verify_mode = OpenSSL::SSL::VERIFY_PEER
+        # TODO: review this option
+        # @http.ssl_version = OpenSSL::SSL::OP_NO_SSLv3
+      end
+      http
     end
   end
 end

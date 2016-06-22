@@ -1,0 +1,9 @@
+*.swp
+.Gemfile
+.ruby-version
+debug.log
+pkg
+/.bundle
+/dist
+/doc/rdoc
+/*/doc

@@ -39,25 +39,4 @@ describe Mercadopago::Config, specific_specs: true do
     end
   end
 
-  describe 'sandbox_mode' do
-
-    context 'when is not set' do
-      it{ expect(config.sandbox_mode).to be_truthy }
-    end
-
-    context 'configure via config block' do
-      let(:sandbox_mode){ false }
-
-      before do
-        Mercadopago.configure{|c| c.sandbox_mode = sandbox_mode }
-      end
-
-      it{ expect(config.sandbox_mode).to be(sandbox_mode) }
-
-      after do
-        Mercadopago.configure{|c| c.sandbox_mode = true }
-      end
-    end
-  end
-
 end

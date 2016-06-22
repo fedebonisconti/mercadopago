@@ -11,21 +11,13 @@ describe "Mercadopago::Client" do
     end
   end
 
-  describe 'payment' do
-    context 'when API endpoint is invalid' do
-      it { expect{ client.payment(:api_endpoint)}.to raise_error(Mercadopago::Errors::Endpoint)}
-    end
-  end
-
-  describe 'subscribe' do
-    context 'when API endpoint is invalid' do
-      it { expect{ client.subscribe(:api_endpoint)}.to raise_error(Mercadopago::Errors::Endpoint)}
-    end
-  end
-
   describe 'payment_methods' do
     context 'when API endpoint is invalid' do
       it { expect{ client.payment_methods(:api_endpoint)}.to raise_error(Mercadopago::Errors::Endpoint)}
     end
+  end
+
+  context 'when requested payment methods' do
+    it { expect(client.payment_methods(:get)[:status]).to eq("200")  }
   end
 end

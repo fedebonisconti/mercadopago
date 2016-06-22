@@ -72,7 +72,6 @@ module Mercadopago
 
     def set_http
       http = Net::HTTP.new(api_base_uri.host, api_base_uri.port)
-      http.set_debug_output $stdout
       if api_base_uri.scheme == "https"
         http.use_ssl = true
         http.verify_mode = OpenSSL::SSL::VERIFY_PEER

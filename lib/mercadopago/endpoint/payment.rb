@@ -8,7 +8,7 @@ module Mercadopago
         rest_client.get(endpoint)
       end
 
-      def charge
+      def create
         rest_client.post(ENDPOINT, data)
       end
 

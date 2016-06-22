@@ -9,14 +9,12 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Federico Bonisconti"]
   spec.email         = ["fedebonisconti26@gmail.com"]
   spec.licenses      = ["MIT"]
-  spec.summary       = %q{Object-oriented wrapper for mercadopago's API.}
-  spec.description   = %q{Object-oriented wrapper for mercadopago's API.}
+  spec.summary       = "Object-oriented wrapper for mercadopago's API."
+  spec.description   = "Object-oriented wrapper for mercadopago's API."
   spec.homepage      = "https://github.com/fedebonisconti/mercadopago"
 
-  spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
-  spec.bindir        = "exe"
-  spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
+  spec.required_ruby_version = '>= 2.1.0'
 
   spec.add_development_dependency "bundler", "~> 1.11"
   spec.add_development_dependency "rake", "~> 10.0"

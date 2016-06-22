@@ -17,7 +17,4 @@ describe "Mercadopago::Client" do
     end
   end
 
-  context 'when requested payment methods' do
-    it { expect(client.payment_methods(:get)[:status]).to eq("200")  }
-  end
 end

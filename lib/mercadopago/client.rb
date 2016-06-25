@@ -1,3 +1,4 @@
+require "forwardable"
 require "mercadopago/rest_client"
 require "mercadopago/endpoint"
 

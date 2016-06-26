@@ -5,12 +5,6 @@ require "mercadopago/endpoint"
 require "mercadopago/config"
 
 
-# Add es load path by default
-if defined?(I18n)
-  I18n.load_path << File.join(File.dirname(__FILE__),
-    "config", "locales", "es.yml")
-end
-
 module Mercadopago
   extend self
 

@@ -1,8 +1,8 @@
-[![Build Status](https://travis-ci.org/fedebonisconti/mercadopago.svg?branch=master)](https://travis-ci.org/fedebonisconti/mercadopago)
-
 # Mercadopago
 
-Mercadopago-rb is an object-oriented adapter that facilitates the usage of Mercadopago's API.
+[![Build Status](https://travis-ci.org/fedebonisconti/mercadopago.svg?branch=master)](https://travis-ci.org/fedebonisconti/mercadopago)
+
+mercadopago-rb is an object-oriented adapter that facilitates the usage of Mercadopago's API.
 
 ## Installation
 

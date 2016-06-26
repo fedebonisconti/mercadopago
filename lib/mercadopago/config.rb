@@ -34,7 +34,7 @@ module Mercadopago
     def secrets(key = nil)
       if defined?(::Rails)
         @secrets ||= ::Rails.application.secrets.mercadopago
-        (key && @secrets[key]) || @secrets
+        (@secrets && key && @secrets[key]) || @secrets
       end
     end
 

@@ -4,12 +4,12 @@ require "mercadopago/endpoint"
 
 module Mercadopago
   class Client
-    attr_accessor :rest_client
-
     extend Forwardable
 
-    def_delegators :@rest_client, :sandbox_mode,
-      :access_token, :public_key
+    attr_accessor :rest_client
+
+    def_delegators :@rest_client, :access_token, :public_key, :get, :post,
+      :put, :delete
 
 
     def initialize(opts = {})

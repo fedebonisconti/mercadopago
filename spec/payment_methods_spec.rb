@@ -13,7 +13,8 @@ describe "Mercadopago::Client" do
 
   describe 'payment_methods' do
     context 'when API endpoint is invalid' do
-      it { expect{ client.payment_methods(:api_endpoint)}.to raise_error(Mercadopago::Errors::Endpoint)}
+      it { expect{ client.payment_methods(:api_endpoint)}.to \
+      raise_error(Mercadopago::Errors::Endpoint)}
     end
   end
 

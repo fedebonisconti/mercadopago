@@ -9,7 +9,7 @@ mercadopago-rb is an object-oriented adapter that facilitates the usage of Merca
 You can add it to your Gemfile with:
 
 ```ruby
-gem 'mercadopago-rb'
+gem 'mercadopago-rb', require: 'mercadopago'
 ```
 
 And then execute:

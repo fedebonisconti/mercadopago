@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe "Mercadopago::Response" do
   let(:status) { "200" }
-  let(:response) { {"id": 1234} }
+  let(:response) { {:id => 1234} }
   let(:response_object) { Mercadopago::Response.new(status, response) }
 
   describe 'response' do

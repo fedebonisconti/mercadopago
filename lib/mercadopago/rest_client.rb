@@ -2,6 +2,7 @@ require 'uri'
 require 'net/https'
 require 'json'
 require 'mercadopago/config'
+require 'mercadopago/response'
 
 module Mercadopago
   class RestClient
@@ -55,10 +56,7 @@ module Mercadopago
 
     def request(method, uri, params, content_type, data = {})
       api_result = http.send_request(method, generate_uri(uri, params), data.to_json, headers(content_type))
-      {
-        status: api_result.code,
-        response: JSON.parse(api_result.body)
-      }
+      Response.new(api_result.code, JSON.parse(api_result.body))
     end
 
     private

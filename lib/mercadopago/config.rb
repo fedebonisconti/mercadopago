@@ -3,7 +3,7 @@ require 'mercadopago/config/env'
 module Mercadopago
   module Config
     extend self
-    attr_accessor :access_token, :public_key, :sandbox_mode
+    attr_accessor :access_token, :public_key
     attr_reader :secrets
 
     def access_token
@@ -18,16 +18,8 @@ module Mercadopago
       raise(Errors::CredentialNotFound.new('Public Key not found'))
     end
 
-    def sandbox_mode
-      if @sandbox_mode.nil?
-        @sandbox_mode = secrets('sandbox_mode') ||
-        ENV['MERCADOPAGO_LIVE_MODE'] || true
-      end
-      @sandbox_mode
-    end
-
     def reset!
-      @access_token = (@public_key = (@sandbox_mode = nil))
+      @access_token = (@public_key = nil)
     end
 
     private

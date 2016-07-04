@@ -7,8 +7,7 @@ require 'mercadopago/response'
 module Mercadopago
   class RestClient
     attr_accessor :http, :api_base_uri
-    attr_reader :sandbox_mode, :access_token, :public_key,
-      :client_secret, :query
+    attr_reader :access_token, :public_key, :client_secret, :query
 
     MIME_JSON = 'application/json'.freeze
     MIME_FORM = 'application/x-www-form-urlencoded'.freeze
@@ -23,7 +22,6 @@ module Mercadopago
     def initialize(opts = {})
       @access_token = opts[:access_token] || Config.access_token
       @public_key = opts[:public_key] || Config.public_key
-      @sandbox_mode = opts[:sandbox_mode] || Config.sandbox_mode || true
       @http = set_http
     end
 

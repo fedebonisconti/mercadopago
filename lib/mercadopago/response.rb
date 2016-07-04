@@ -8,11 +8,11 @@ module Mercadopago
     end
 
     def [](attr)
-      to_h[attr]
+      hash[attr]
     end
 
     def to_h
-      @hash ||= {status: status, response: response}
+      hash
     end
 
     def method_missing(name, *args, &block)
@@ -25,6 +25,10 @@ module Mercadopago
 
     def respond_to?(name, include_private = false)
       response.has_key?(name.to_sym) || response.has_key?(name.to_s) || super
+    end
+
+    def hash
+      @hash ||= {status: status, response: response}
     end
   end
 end

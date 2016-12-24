@@ -11,7 +11,6 @@ module Mercadopago
     def_delegators :@rest_client, :access_token, :public_key, :get, :post,
       :put, :delete
 
-
     def initialize(opts = {})
       @rest_client = RestClient.new(opts)
     end
@@ -26,6 +25,14 @@ module Mercadopago
       call_endpoint(Endpoint::PaymentMethods, method, data)
     end
 
+    # This method provides interaction with preference method's API endpoint
+    def preference(method, data = {})
+      call_endpoint(Endpoint::Preference, method, data)
+    end
+
+    def card_token(method, data = {})
+      call_endpoint(Endpoint::CardToken, method, data)
+    end
 
     private
     def call_endpoint(klazz, method, data)

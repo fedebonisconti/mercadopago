@@ -2,9 +2,9 @@ require 'spec_helper'
 
 describe "Mercadopago::RestClient" do
   let(:rest_client) { Mercadopago.client.rest_client }
-  let(:status_ok) { "200" }
-  let(:status_error) { "400" }
-  let(:empty_string_hash) { "{}" }
+  let(:endpoint) { "/v1/payments" }
+  let(:url) { MERCADOPAGO_API + rest_client.request_uri(endpoint) }
+  let(:headers) { rest_client.headers(Mercadopago::RestClient::MIME_JSON) }
 
   before(:each) do
     Mercadopago.configure do |config|
@@ -15,25 +15,21 @@ describe "Mercadopago::RestClient" do
 
   describe 'rest_client' do
     context 'when API endpoint\'s call response is ok' do
-      before do
-        http_stub = double
-        allow(http_stub).to receive(:code).and_return(status_ok)
-        allow(http_stub).to receive(:body).and_return(empty_string_hash)
-        allow(rest_client.http).to receive(:send_request) do |arg1, arg2, arg3, arg4|
-        end.and_return(http_stub)
+      it do
+        stub_request(:get, url)
+        .with( :body => "{}", :headers => headers )
+        .to_return(:status => 200, :body => "{}", :headers => {})
+        expect(rest_client.get(endpoint)[:status]).to eq("200")
       end
-      it { expect(rest_client.get("/v1/payments")[:status]).to eq(status_ok) }
     end
 
     context 'when API endpoint\'s call response is a bad request' do
-      before do
-        http_stub = double
-        allow(http_stub).to receive(:code).and_return(status_error)
-        allow(http_stub).to receive(:body).and_return(empty_string_hash)
-        allow(rest_client.http).to receive(:send_request) do |arg1, arg2, arg3, arg4|
-        end.and_return(http_stub)
+      it do
+        stub_request(:get, url)
+        .with( :body => "{}", :headers => headers )
+        .to_return(:status => 400, :body => "{}", :headers => {})
+        expect(rest_client.get(endpoint)[:status]).to eq("400")
       end
-      it { expect(rest_client.get("/v1/payments")[:status]).to eq(status_error) }
     end
   end
 end

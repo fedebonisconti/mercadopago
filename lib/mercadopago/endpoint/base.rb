@@ -17,7 +17,6 @@ module Mercadopago
         id = data[:id] || raise(StandardError.new('Unknown ID'))
         "#{self.class::ENDPOINT}/#{id}"
       end
-
     end
   end
 end

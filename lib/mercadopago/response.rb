@@ -1,6 +1,6 @@
 module Mercadopago
   class Response
-    attr_reader :status, :response, :hash
+    attr_reader :status, :response, :content
 
     def initialize(status, response)
       @status = status
@@ -8,11 +8,11 @@ module Mercadopago
     end
 
     def [](attr)
-      hash[attr]
+      content[attr]
     end
 
     def to_h
-      hash
+      content
     end
 
     def method_missing(name, *args, &block)
@@ -27,8 +27,8 @@ module Mercadopago
       response.has_key?(name.to_sym) || response.has_key?(name.to_s) || super
     end
 
-    def hash
-      @hash ||= {status: status, response: response}
+    def content
+      @content ||= {status: status, response: response}
     end
   end
 end

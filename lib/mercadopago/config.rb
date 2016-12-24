@@ -4,7 +4,6 @@ module Mercadopago
   module Config
     extend self
     attr_accessor :access_token, :public_key
-    attr_reader :secrets
 
     def access_token
       @access_token ||= secrets('access_token') ||
